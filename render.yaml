@@ -1,3 +1,7 @@
+databases:
+  - name: sql-assist-db
+    plan: free
+
 services:
   # 1. Backend FastAPI Service
   - type: web
@@ -6,13 +10,11 @@ services:
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
     plan: free
-    disk:
-      name: backend-data
-      mountPath: /app/data
-      sizeGB: 1
     envVars:
       - key: DATABASE_URL
-        value: sqlite:////app/data/users.db
+        fromDatabase:
+          name: sql-assist-db
+          property: connectionString
       - key: SECRET_KEY
         generateValue: true
       - key: GEMINI_API_KEY
