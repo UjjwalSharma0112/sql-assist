@@ -1,0 +1,35 @@
+services:
+  # 1. Backend FastAPI Service
+  - type: web
+    name: sql-assist-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    disk:
+      name: backend-data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////app/data/users.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false # User will prompt for this in Render dashboard
+      - key: ALLOWED_ORIGINS
+        sync: true # Set this to the frontend URL after it is generated
+
+  # 2. Frontend Next.js Service
+  - type: web
+    name: sql-assist-frontend
+    env: docker
+    dockerContext: ./frontend
+    dockerfilePath: ./frontend/Dockerfile
+    plan: free
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: sql-assist-backend
+          type: web
+          property: url
