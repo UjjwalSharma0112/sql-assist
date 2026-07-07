@@ -18,9 +18,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: GEMINI_API_KEY
-        sync: false # User will prompt for this in Render dashboard
+        value: placeholder-change-me # Replace with your Gemini API Key in the Render dashboard
       - key: ALLOWED_ORIGINS
-        sync: true # Set this to the frontend URL after it is generated
+        value: "*" # Change this to your frontend URL once generated
 
   # 2. Frontend Next.js Service
   - type: web
@@ -31,7 +31,4 @@ services:
     plan: free
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: sql-assist-backend
-          type: web
-          property: url
+        value: https://sql-assist-backend.onrender.com/api/v1 # Update if Render assigns a different URL to the backend
