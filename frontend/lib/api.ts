@@ -1,7 +1,19 @@
 // REST API client for NL2SQL Assistant v1
-const BASE_URL = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? 'http://localhost:8000/api/v1'
-  : '/api/v1';
+const getBaseUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl) {
+    // If it has a protocol and doesn't end with /api/v1, append it
+    if (envUrl.startsWith('http') && !envUrl.includes('/api/v')) {
+      return envUrl.endsWith('/') ? `${envUrl}api/v1` : `${envUrl}/api/v1`;
+    }
+    return envUrl;
+  }
+  return typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:8000/api/v1'
+    : '/api/v1';
+};
+
+const BASE_URL = getBaseUrl();
 
 function getAuthToken(): string {
   if (typeof window !== 'undefined') {

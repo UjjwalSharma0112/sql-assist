@@ -1,0 +1,6 @@
+  ¿ Database Type:  PostgreSQL
+  ¿ Host:  target-db
+  ¿ Port:  5432
+  ¿ Database Name:  target_store
+  ¿ Username:  target_user
+  ¿ Password:  target_password
